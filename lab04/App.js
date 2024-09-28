@@ -1,106 +1,97 @@
-import { Text, SafeAreaView, StyleSheet ,FlatList,View,Image,Pressable,ScrollView} from 'react-native';
+import * as React from 'react';
+import { View, Text, Image, Pressable, SafeAreaView, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-// You can import supported modules from npm
-import { Card } from 'react-native-paper';
+function HomeScreen({ navigation, route }) {
+  const [imageSource, setImageSource] = React.useState(require('./assets/vs_red.png'));
 
-// or any files within the Snack
-import AssetExample from './components/AssetExample';
-
-  const data = [
-    { id : 1 ,
-      title : 'ca nau lau my mini...',
-      supplier: 'Shop Devang',
-      image: require('./assets/ca_nau_lau.png')
-    },
-    { id : 2 ,
-      title : 'ca nau lau my mini...',
-      supplier: 'Shop Devang',
-      image: require('./assets/do_choi_dang_mo_hinh.png')
-    },
-    { id : 3 ,
-      title : 'ca nau lau my mini...',
-      supplier: 'Shop Devang',
-      image: require('./assets/ga_bo_toi.png')
-    },
-    { id : 4 ,
-      title : 'ca nau lau my mini...',
-      supplier: 'Shop Devang',
-      image: require('./assets/hieu_long_con_tre (1).png')
-    },
-    { id : 5 ,
-      title : 'ca nau lau my mini...',
-      supplier: 'Shop Devang',
-      image: require('./assets/snack-icon.png')
-    },
-    { id : 6 ,
-      title : 'ca nau lau my mini...',
-      supplier: 'Shop Devang',
-      image: require('./assets/trump1.png')
-    },
-    { id : 6 ,
-      title : 'ca nau lau my mini...',
-      supplier: 'Shop Devang',
-      image: require('./assets/trump1.png')
-    },
-    { id : 6 ,
-      title : 'ca nau lau my mini...',
-      supplier: 'Shop Devang',
-      image: require('./assets/trump1.png')
-    },
-    { id : 6 ,
-      title : 'ca nau lau my mini...',
-      supplier: 'Shop Devang',
-      image: require('./assets/trump1.png')
+  React.useEffect(() => {
+    if (route.params?.selectedColor) {
+      setImageSource(route.params.selectedColor);
     }
-  ]
- 
-export default function App() {
-  const renderItem = ({item})=>( 
-    <View style= {styles.viewsItems ,{marginTop: '10px'}}>
-          <View style = {styles.item}>
-            <Image style = {{width:88 , height:70, }} source = {item.image} />
-            <View> 
-              <Text> {item.title} </Text>
-              <Text> {item.supplier} </Text>
-            </View>
-            <Pressable style = {styles.button}> 
-              <Text style ={{color: 'white'}}> Chat </Text>
-            </Pressable>
-          </View>
-          <View style = {{width:'100%',borderWidth : 1 , backgroundColor:'#C4C4C4' }}> </View>
-    </View>
-  );
+  }, [route.params?.selectedColor]);
+
   return (
-    
     <SafeAreaView style={styles.container}>
-        <View style = {styles.header}>
-          <Image style = {styles.imageHeader} source = {require('./assets/bi_cart-check.png')} />
-          <Text style = {{color:'white'}}>Chat</Text>
-          <Image style = {styles.imageHeader} source = {require('./assets/Vector.png')} />
+      <View>
+        <Image style={styles.image} source={imageSource} />
+      </View>
+      <View style={styles.viewDescription}>
+        <Text style={styles.title}>Điện Thoại Vsmart Joy 3 - Hàng chính hãng</Text>
+        <View style={styles.star}>
+          {[...Array(5)].map((_, index) => (
+            <Image key={index} source={require('./assets/star.png')} />
+          ))}
+          <Text style={styles.reviewText}>(Xem 828 đánh giá)</Text>
         </View>
-        <View style= {styles.viewsItems}>
-          <View style = {[styles.item , {    marginHorizontal: 20}]}>
-            <Text>Bạn có thắc mắc với sản phẩm vừa xem đừng ngại chát với shop!</Text>
+        <View style={styles.viewPrice}>
+          <Text>1.790.000 đ</Text>
+          <Text style={styles.strikethrough}>1.790.000 đ</Text>
         </View>
-        <View style = {{width:'100%',borderWidth : 1 , backgroundColor:'#C4C4C4' }}> </View>
+        <View style={styles.priceAlert}>
+          <Text style={styles.priceAlertText}>Ở ĐÂU RẺ HƠN HOÀN TIỀN</Text>
+          <Image style={styles.alertIcon} source={require('./assets/Group1.png')} />
         </View>
-        
-          <FlatList 
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={item=>item.id.toString()}  
-           
-          />
-        
-
-
-        <View style = {styles.footer}>
-          <Image style = {styles.imageHeader} source = {require('./assets/Group10.png')} />
-          <Image style = {styles.imageHeader} source = {require('./assets/Vector(Stroke).png')} />
-          <Image style = {styles.imageHeader} source = {require('./assets/Vector1(Stroke).png')} />
-        </View>
-
+        <Pressable style={styles.pressableChoose} onPress={() => navigation.navigate('Details')}>
+          <Text style={styles.chooseText}>4 MÀU-CHỌN MÀU</Text>
+          <Image source={require('./assets/Vector.png')} />
+        </Pressable>
+        <Pressable style={styles.pressableBuy}>
+          <Text style={styles.buyText}>Chọn Mua</Text>
+        </Pressable>
+      </View>
     </SafeAreaView>
+  );
+}
+
+function DetailsScreen({ navigation }) {
+  const colors = [
+    { color: '#0000FF', image: require('./assets/vs_blue.png') },
+    { color: '#F30D0D', image: require('./assets/vs_red.png') },
+    { color: '#000000', image: require('./assets/vs_black.png') },
+    { color: '#C0C0C0', image: require('./assets/vs_silver.png') },
+  ];
+
+  const [selectedColor, setSelectedColor] = React.useState(colors[1].image); // Default to red color
+
+  return (
+    <SafeAreaView style={styles.detailsContainer}>
+      <View style={styles.detailsHeader}>
+        <Image style={styles.detailsImage} source={selectedColor} />
+        <Text style={styles.detailsTitle}>Điện Thoại Vsmart Joy 3 Hàng chính hãng</Text>
+      </View>
+      <View style={styles.colorSelection}>
+        <Text>Chọn một màu bên dưới:</Text>
+        <View style={styles.colorButtons}>
+          {colors.map((item, index) => (
+            <Pressable
+              key={index}
+              style={[styles.colorButton, { backgroundColor: item.color }]}
+              onPress={() => setSelectedColor(item.image)}
+            />
+          ))}
+        </View>
+        <Pressable
+          style={styles.confirmButton}
+          onPress={() => navigation.navigate('Home', { selectedColor })}>
+          <Text style={styles.confirmText}>XONG</Text>
+        </Pressable>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+const Stack = createNativeStackNavigator();
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Details" component={DetailsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -110,45 +101,117 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#ecf0f1',
     padding: 8,
+    margin: 15,
   },
- 
-  imageHeader : {
-    width:20,
-    height:20,
+  image: {
+    width: 301,
+    height: 361,
   },
-  header: {
+  title: {
+    fontSize: 15,
+    marginTop: 10,
+  },
+  star: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  viewDescription: {
     flex: 1,
-    flexDirection:'row',
-    justifyContent: 'space-around',
-    alignItems:'center',
-    backgroundColor:'#1BA9FF',
-    paddingVertical: 10,
-
+    justifyContent: 'space-between',
   },
-  footer : {
+  viewPrice: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  strikethrough: {
+    textDecorationLine: 'line-through',
+    marginRight: 50,
+  },
+  priceAlert: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  priceAlertText: {
+    fontWeight: 'bold',
+    fontSize: 12,
+    color: 'red',
+  },
+  alertIcon: {
+    width: 20,
+    height: 20,
+    marginLeft: 5,
+  },
+  pressableChoose: {
+    borderRadius: 10,
+    borderColor: 'black',
+    borderWidth: 2,
+    height: 25,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  chooseText: {
+    fontWeight: 'bold',
+  },
+  pressableBuy: {
+    borderRadius: 10,
+    borderColor: 'black',
+    height: 34,
+    borderWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#CA1536',
+  },
+  buyText: {
+    fontWeight: '700',
+    fontSize: 20,
+    color: 'white',
+  },
+  detailsContainer: {
     flex: 1,
-    flexDirection:'row',
-    justifyContent: 'space-around',
-    alignItems:'center',
-    backgroundColor:'#1BA9FF',
-    paddingVertical: 10,
-
+    margin: 10,
   },
-  item : {
-    flexDirection:'row',
-    justifyContent: 'space-around',
-    alignItems:'center',
-    padding:10
+  detailsHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
   },
-  viewsItems : {
-      justifyContent:'center',
+  detailsImage: {
+    width: 112,
+    height: 132,
   },
-  button: {
-    backgroundColor:'#F31111',
-    width:88,
-    height:38,
-    borderRadius:2,
+  detailsTitle: {
+    color: 'black',
+    fontSize: 14,
+  },
+  colorSelection: {
+    flex: 3,
+    backgroundColor:'yellow'
+  },
+  colorButtons: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    marginTop: 10,
     justifyContent:'center',
     alignItems:'center'
-  }
+  },
+  colorButton: {
+    width: 85,
+    height: 80,
+    marginTop:'5px'
+  },
+  confirmButton: {
+    height: 44,
+    backgroundColor: '#1952E294',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  confirmText: {
+    color: '#F9F2F2',
+    fontWeight: '700',
+    fontSize: 20,
+  },
 });
+
+export default App;

@@ -20,7 +20,12 @@ export default function App() {
     try {
         const response = await fetch('https://jsonplaceholder.typicode.com/posts');
         const json = await response.json();
-        setData(json);
+        
+        setData(json.map(item=>({
+          ...item,
+          "image" : require('./assets/daucam 1.png')
+        })));
+        
         console.log("data: " , data);
         setLoading(false)
     } catch (error) {
@@ -111,8 +116,8 @@ export default function App() {
           style={styles.icon}
         />
       </View>
-        <Image source = {require('./bi_cart-check.png')} />
-        <Image source = {require('./Group 2.png')} />
+        <Image source = {require('./assets/bi_cart-check.png')} />
+        <Image source = {require('./assets/Group 2.png')} />
       </View>
       <FlatList 
       data={data}
@@ -131,8 +136,8 @@ export default function App() {
           style={styles.icon}
         />
       </View>
-        <Image source = {require('./bi_cart-check.png')} />
-        <Image source = {require('./Group 2.png')} />
+        <Image source = {require('./assets/bi_cart-check.png')} />
+        <Image source = {require('./assets/Group 2.png')} />
       </View>
       
     </SafeAreaView>
