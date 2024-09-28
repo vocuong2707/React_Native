@@ -56,7 +56,7 @@ import AssetExample from './components/AssetExample';
  
 export default function App() {
   const renderItem = ({item})=>( 
-    <View style= {styles.viewsItems ,{marginTop: '10px'}}>
+    <View style= {[styles.viewsItems ,{marginTop: 10}]}>
           <View style = {styles.item}>
             <Image style = {{width:88 , height:70, }} source = {item.image} />
             <View> 
@@ -89,11 +89,8 @@ export default function App() {
           data={data}
           renderItem={renderItem}
           keyExtractor={item=>item.id.toString()}  
-           
+          style = {{flex: 9}}
           />
-        
-
-
         <View style = {styles.footer}>
           <Image style = {styles.imageHeader} source = {require('./assets/Group10.png')} />
           <Image style = {styles.imageHeader} source = {require('./assets/Vector(Stroke).png')} />
@@ -132,7 +129,6 @@ const styles = StyleSheet.create({
     alignItems:'center',
     backgroundColor:'#1BA9FF',
     paddingVertical: 10,
-
   },
   item : {
     flexDirection:'row',
@@ -150,5 +146,14 @@ const styles = StyleSheet.create({
     borderRadius:2,
     justifyContent:'center',
     alignItems:'center'
-  }
+  },
+  gridItem: {
+    flex: 1,
+    margin: 5,
+    backgroundColor: '#f1f1f1',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 10,
+  },
 });
